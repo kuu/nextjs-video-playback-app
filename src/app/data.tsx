@@ -37,7 +37,7 @@ const players = {
 
 function initEndpoints(): Endpoint[] {
     if (!endpoints) {
-        endpoints = JSON.parse(process.env.ENDPOINT_LIST as string);
+        endpoints = JSON.parse(process.env.NEXT_PUBLIC_ENDPOINT_LIST as string);
         for (const endpoint of endpoints!) {
             if (typeof endpoint.url === 'string' && !endpoint.url.startsWith('http')) {
                 endpoint.url = eval(`(${endpoint.url})`);
