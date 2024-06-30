@@ -1,10 +1,12 @@
 import Image from "next/image";
-import Link from "next/link";
+import dynamic from 'next/dynamic'
 import styles from "./page.module.css";
-import {getEndpoints} from "./data";
+ 
+const DynamicEndpoints = dynamic(() => import('./endpoints'), {
+  ssr: false,
+})
 
 export default function Home() {
-  const endpoints = getEndpoints();
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -42,9 +44,7 @@ export default function Home() {
       </div>
 
       <div className={styles.grid}>
-        {endpoints.map(({id, name}, index) => (
-          <Link key={index} href={id}>{name}</Link>
-        ))}
+        <DynamicEndpoints />
       </div>
     </main>
   );

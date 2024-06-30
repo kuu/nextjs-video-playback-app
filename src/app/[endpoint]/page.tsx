@@ -1,15 +1,20 @@
 import Image from "next/image";
-import Link from "next/link";
+import dynamic from 'next/dynamic'
 import styles from "../page.module.css";
-import {getEndpoint, getPlayers} from "../data";
+
+const DynamicEndpoint = dynamic(() => import('./endpoint'), {
+  ssr: false,
+});
+
+const DynamicEndpointName = dynamic(() => import('./endpoint-name'), {
+  ssr: false,
+});
 
 export default function Endpoint({params}: { params: { endpoint: string }}) {
-    const endpoint = getEndpoint(params.endpoint);
-    const players = endpoint ? getPlayers(endpoint.type) : [];
     return (
       <main className={styles.main}>
         <div className={styles.description}>
-          <div>{endpoint?.name}</div>
+          <DynamicEndpointName params={params} />
           <p>
             Choose player&nbsp;
           </p>
@@ -26,9 +31,7 @@ export default function Endpoint({params}: { params: { endpoint: string }}) {
         </div>
 
         <div className={styles.grid}>
-          {players.map(({id, name}, index) => (
-            <Link key={index} href={`/${endpoint?.id}/${id}`}>{name}</Link>
-          ))}
+          <DynamicEndpoint params={params} />
         </div>
       </main>
     );
