@@ -3,13 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
-import {getEndpoints, EndpointProps} from "./data";
+import { EndpointProps } from "./api/data";
 
 export default function Home() {
   const [endpoints, setEndpoints] = useState<EndpointProps[] | undefined>();
   useEffect(() => {
     const fetchData = async () => {
-      const endpoints = await getEndpoints();
+      const res = await fetch("/api/endpoints");
+      const {endpoints} = await res.json();
       setEndpoints(endpoints);
     };
     fetchData();
