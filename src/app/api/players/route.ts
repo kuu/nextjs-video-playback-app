@@ -6,3 +6,5 @@ export async function GET(req: Request) {
     const players = (type !== 'hls' && type !== 'dash') ? [] : await getPlayers(type);
     return Response.json({ players });
 }
+
+export const revalidate = 0;

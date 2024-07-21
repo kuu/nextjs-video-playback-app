@@ -9,6 +9,8 @@ const DynamicHLSPlayer = dynamic(() => import('../../components/hls'), {
   ssr: false,
 });
 
+export const revalidate = 0;
+
 export default function Player({params}: { params: { endpoint: string }}) {
   return (
     <main className={styles.main}>

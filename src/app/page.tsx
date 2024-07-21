@@ -6,6 +6,8 @@ const DynamicEndpoints = dynamic(() => import('./components/endpoints'), {
   ssr: false,
 });
 
+export const revalidate = 0;
+
 export default function Home() {
   return (
     <main className={styles.main}>

@@ -10,6 +10,8 @@ const DynamicEndpointName = dynamic(() => import('../components/endpoint-name'),
   ssr: false,
 });
 
+export const revalidate = 0;
+
 export default function Endpoint({params}: { params: { endpoint: string }}) {
     return (
       <main className={styles.main}>
