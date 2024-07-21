@@ -4,3 +4,5 @@ export async function GET() {
     const endpoints = await getEndpoints();
     return Response.json({ endpoints });
 }
+
+export const revalidate = 0;
