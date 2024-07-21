@@ -28,7 +28,7 @@ function getEndpointsAsync(): Promise<EndpointProps[]> {
             resolve(endpoints);
         } catch (error) {
             console.error(error)
-            reject(error);
+            resolve([]);
         }
     });
 }
