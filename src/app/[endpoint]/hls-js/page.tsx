@@ -2,13 +2,14 @@
 import { useState, useEffect } from "react";
 import styles from "../../page.module.css";
 import HLSPlayer from "./hls";
-import { getEndpoint, EndpointProps } from "../../data";
+import { EndpointProps } from "../../api/data";
 
 export default function Player({params}: { params: { endpoint: string }}) {
   const [endpoint, setEndpoint] = useState<EndpointProps | undefined>();
   useEffect(() => {
     const fetchData = async () => {
-      const endpoint = await getEndpoint(params.endpoint);
+      const res = await fetch(`/api/${params.endpoint}`);
+      const {endpoint} = await res.json();
       setEndpoint(endpoint);
     };
     fetchData();

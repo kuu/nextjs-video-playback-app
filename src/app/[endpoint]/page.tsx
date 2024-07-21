@@ -3,17 +3,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import styles from "../page.module.css";
-import { getEndpoint, getPlayers, EndpointProps, PlayerProps } from "../data";
+import { EndpointProps, PlayerProps } from "../api/data";
 
 export default function Endpoint({params}: { params: { endpoint: string }}) {
     const [endpoint, setEndpoint] = useState<EndpointProps | undefined>();
     const [players, setPlayers] = useState<PlayerProps[]>([]);
     useEffect(() => {
       const fetchData = async () => {
-        const endpoint = await getEndpoint(params.endpoint);
+        const res = await fetch(`/api/${params.endpoint}`);
+        const {endpoint} = await res.json();
         setEndpoint(endpoint);
         if (endpoint) {
-          setPlayers(await getPlayers(endpoint.type));
+          const res = await fetch(`/api/players?type=${endpoint.type}`);
+          const {players} = await res.json();
+          setPlayers(players);
         }
       };
       fetchData();
