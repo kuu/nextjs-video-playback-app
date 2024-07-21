@@ -3,7 +3,7 @@ import HLSPlayer from "./hls";
 import {getEndpoint} from "../../data";
 
 export default async function Player({params}: { params: { endpoint: string }}) {
-  const endpoint = getEndpoint(params.endpoint);
+  const endpoint = await getEndpoint(params.endpoint);
   if (!endpoint) {
     return <div>Endpoint is not specified</div>;
   }
