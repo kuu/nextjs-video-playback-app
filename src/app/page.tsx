@@ -1,12 +1,19 @@
+'use client';
 import Image from "next/image";
-import dynamic from 'next/dynamic'
+import Link from "next/link";
+import { useState, useEffect } from "react";
 import styles from "./page.module.css";
- 
-const DynamicEndpoints = dynamic(() => import('./endpoints'), {
-  ssr: false,
-})
+import {getEndpoints, EndpointProps} from "./data";
 
 export default function Home() {
+  const [endpoints, setEndpoints] = useState<EndpointProps[] | undefined>();
+  useEffect(() => {
+    const fetchData = async () => {
+      const endpoints = await getEndpoints();
+      setEndpoints(endpoints);
+    };
+    fetchData();
+  }, []);
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -44,7 +51,9 @@ export default function Home() {
       </div>
 
       <div className={styles.grid}>
-        <DynamicEndpoints />
+      {endpoints?.map(({id, name}, index) => (
+        <Link key={index} href={id}>{name}</Link>
+      ))}
       </div>
     </main>
   );
