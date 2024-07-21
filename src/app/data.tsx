@@ -26,6 +26,9 @@ function getEndpointsAsync(): Promise<EndpointProps[]> {
                     }
                 }
             }
+            console.log('--- Reading from environment variable ---');
+            console.log(`${JSON.stringify(endpoints, null, 2)}`);
+            console.log('---');
             resolve(endpoints);
         } catch (error) {
             console.error(error)

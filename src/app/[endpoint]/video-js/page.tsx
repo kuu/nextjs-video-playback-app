@@ -4,7 +4,7 @@ import styles from "../../page.module.css";
 import HLSPlayer from "./video-js";
 import { getEndpoint, EndpointProps } from "../../data";
 
-export default async function Player({params}: { params: { endpoint: string }}) {
+export default function Player({params}: { params: { endpoint: string }}) {
   const [endpoint, setEndpoint] = useState<EndpointProps | undefined>();
   useEffect(() => {
     const fetchData = async () => {
