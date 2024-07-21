@@ -1,8 +1,10 @@
 "use client"
 import React, {useState, useEffect, useRef} from 'react';
 import Hls from 'hls.js';
+import { EndpointProps } from "../api/data";
 
 export default function HLSPlayer({...props}) {
+    const [endpoint, setEndpoint] = useState<EndpointProps | undefined>();
     const videoRef = useRef<HTMLVideoElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -11,15 +13,20 @@ export default function HLSPlayer({...props}) {
         if (video.src) {
             return;
         }
-        console.log(`props.src = ${props.src}`);
-        if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(props.src);
-            hls.attachMedia(video);
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = props.src;
-        }
-    }, [props.src]);
+        const fetchData = async () => {
+            const res = await fetch(`/api/${props.endpoint}`);
+            const {endpoint} = await res.json();
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(endpoint.url);
+                hls.attachMedia(video);
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = endpoint.url;
+            }
+            setEndpoint(endpoint);
+        };
+        fetchData();
+    }, [props.endpoint]);
     return (
         <>
             <video

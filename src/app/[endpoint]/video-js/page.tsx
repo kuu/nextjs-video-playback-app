@@ -1,28 +1,24 @@
-'use client';
-import { useState, useEffect } from "react";
+import dynamic from 'next/dynamic'
 import styles from "../../page.module.css";
-import HLSPlayer from "./video-js";
-import { EndpointProps } from "../../api/data";
+
+const DynamicEndpointName = dynamic(() => import('../../components/endpoint-name'), {
+  ssr: false,
+});
+
+const DynamicHLSPlayer = dynamic(() => import('../../components/video-js'), {
+  ssr: false,
+});
 
 export default function Player({params}: { params: { endpoint: string }}) {
-  const [endpoint, setEndpoint] = useState<EndpointProps | undefined>();
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(`/api/${params.endpoint}`);
-      const {endpoint} = await res.json();
-      setEndpoint(endpoint);
-    };
-    fetchData();
-  }, []);
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <div>{endpoint?.name}</div>
+        <DynamicEndpointName params={params} />
         <p>Played by Video.js&nbsp;</p>
       </div>
       <div className={styles.center}>
-        <HLSPlayer
-          src={endpoint?.url}
+        <DynamicHLSPlayer
+          endpoint={params.endpoint}
           width={640}
           height={360}
           priority
