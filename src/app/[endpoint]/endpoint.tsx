@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { getEndpoint, getPlayers } from "../data";
 
-export default function Endpoint({params}: { params: { endpoint: string }}) {
-  const endpoint = getEndpoint(params.endpoint);
-  const players = endpoint ? getPlayers(endpoint.type) : [];
+export default async function Endpoint({params}: { params: { endpoint: string }}) {
+  const endpoint = await getEndpoint(params.endpoint);
+  const players = endpoint ? await getPlayers(endpoint.type) : [];
     return (
         <>
           {players.map(({id, name}, index) => (

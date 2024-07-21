@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {getEndpoints} from "./data";
 
-export default function Endpoints() {
-    const endpoints = getEndpoints();
+export default async function Endpoints() {
+    const endpoints = await getEndpoints();
     return (
         <>
         {endpoints.map(({id, name}, index) => (

@@ -1,3 +1,7 @@
+'use server';
+
+// Define the server actions
+
 export interface Endpoint {
     readonly id: string;
     readonly type: 'hls' | 'dash';
@@ -10,7 +14,35 @@ export interface Player {
     readonly name: string;
 }
 
-let endpoints: Endpoint[] | undefined;
+function getEndpointsAsync(): Promise<Endpoint[]> {
+    return new Promise((resolve, reject) => {
+        try {
+            const endpoints = JSON.parse(process.env.NEXT_PUBLIC_ENDPOINT_LIST as string);
+            for (const endpoint of endpoints) {
+                if (typeof endpoint.url === 'string' && !endpoint.url.startsWith('http')) {
+                    endpoint.url = eval(`(${endpoint.url})`);
+                }
+            }
+            resolve(endpoints);
+        } catch (error) {
+            console.error(error)
+            reject(error);
+        }
+    });
+}
+
+export async function getEndpoints(): Promise<Endpoint[]> {
+    return await getEndpointsAsync();
+}
+
+export async function getEndpoint(id: string): Promise<Endpoint | null> {
+    for (const endpoint of await getEndpoints()) {
+        if (endpoint.id === id) {
+            return endpoint;
+        }
+    }
+    return null;
+}
 
 const players = {
     hls: [
@@ -35,31 +67,6 @@ const players = {
     ],
 };
 
-function initEndpoints(): Endpoint[] {
-    if (!endpoints) {
-        endpoints = JSON.parse(process.env.NEXT_PUBLIC_ENDPOINT_LIST as string);
-        for (const endpoint of endpoints!) {
-            if (typeof endpoint.url === 'string' && !endpoint.url.startsWith('http')) {
-                endpoint.url = eval(`(${endpoint.url})`);
-            }
-        }
-    }
-    return endpoints!;
-}
-  
-export function getEndpoints(): Endpoint[] {
-    return initEndpoints();
-}
-
-export function getEndpoint(id: string): Endpoint | null {
-    for (const endpoint of initEndpoints()) {
-        if (endpoint.id === id) {
-            return endpoint;
-        }
-    }
-    return null;
-}
-
-export function getPlayers(type: 'hls' | 'dash'): Player[] {
-    return players[type];
+export async function getPlayers(type: 'hls' | 'dash'): Promise<Player[]> {
+    return Promise.resolve(players[type]);
 }
