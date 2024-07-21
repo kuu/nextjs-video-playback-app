@@ -1,7 +1,3 @@
-'use server';
-
-// Define the server actions
-
 export interface EndpointProps {
     readonly id: string;
     readonly type: 'hls' | 'dash';
