@@ -6,6 +6,6 @@ export async function GET(
   ) {
     const endpoint = await getEndpoint(params.endpoint);
     return Response.json({ endpoint });
-  }
+}
 
-  export const revalidate = 0;
+// export const revalidate = 0;
