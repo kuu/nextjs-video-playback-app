@@ -1,25 +1,18 @@
-import dynamic from 'next/dynamic'
 import styles from "../../page.module.css";
+import EndpointName from '../../components/endpoint-name';
+import HLSPlayer from '../../components/video-js';
 
-const DynamicEndpointName = dynamic(() => import('../../components/endpoint-name'), {
-  ssr: false,
-});
-
-const DynamicHLSPlayer = dynamic(() => import('../../components/video-js'), {
-  ssr: false,
-});
-
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default function Player({params}: { params: { endpoint: string }}) {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <DynamicEndpointName params={params} />
+        <EndpointName params={params} />
         <p>Played by Video.js&nbsp;</p>
       </div>
       <div className={styles.center}>
-        <DynamicHLSPlayer
+        <HLSPlayer
           endpoint={params.endpoint}
           width={640}
           height={360}

@@ -1,22 +1,15 @@
 import Image from "next/image";
-import dynamic from 'next/dynamic'
 import styles from "../page.module.css";
+import EndpointLink from '../components/endpoint';
+import EndpointName from '../components/endpoint-name';
 
-const DynamicEndpoint = dynamic(() => import('../components/endpoint'), {
-  ssr: false,
-});
-
-const DynamicEndpointName = dynamic(() => import('../components/endpoint-name'), {
-  ssr: false,
-});
-
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default function Endpoint({params}: { params: { endpoint: string }}) {
     return (
       <main className={styles.main}>
         <div className={styles.description}>
-          <DynamicEndpointName params={params} />
+          <EndpointName params={params} />
           <p>
             Choose player&nbsp;
           </p>
@@ -33,7 +26,7 @@ export default function Endpoint({params}: { params: { endpoint: string }}) {
         </div>
 
         <div className={styles.grid}>
-          <DynamicEndpoint params={params} />
+          <EndpointLink params={params} />
         </div>
       </main>
     );

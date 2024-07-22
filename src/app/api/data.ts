@@ -11,7 +11,7 @@ export interface PlayerProps {
 }
 
 function getEndpointsAsync(): Promise<EndpointProps[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         try {
             const endpoints = JSON.parse(process.env.NEXT_PUBLIC_ENDPOINT_LIST as string);
             for (const endpoint of endpoints) {
@@ -46,7 +46,7 @@ export async function getEndpoint(id: string): Promise<EndpointProps | undefined
     return undefined;
 }
 
-const players = {
+const defaultPlayers = {
     hls: [
         {
             id: "video-js",
@@ -69,6 +69,24 @@ const players = {
     ],
 };
 
+function getPlayersAsync(type: 'hls' | 'dash'): Promise<PlayerProps[]> {
+    return new Promise((resolve) => {
+        try {
+            const players = JSON.parse(process.env.NEXT_PUBLIC_PLAYER_LIST as string);
+            console.log(`--- Reading from environment variable (type=${type}) ---`);
+            console.log(`${JSON.stringify(players, null, 2)}`);
+            console.log('---');
+            if (players[type] === undefined) {
+                resolve(defaultPlayers[type] || []);
+            }
+            resolve(players[type]);
+        } catch (error) {
+            console.error(error)
+            resolve(defaultPlayers[type] || []);
+        }
+    });
+}
+
 export async function getPlayers(type: 'hls' | 'dash'): Promise<PlayerProps[]> {
-    return Promise.resolve(players[type]);
+    return await getPlayersAsync(type);
 }

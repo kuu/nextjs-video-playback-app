@@ -4,24 +4,20 @@ import { useState, useEffect } from "react";
 import { EndpointProps, PlayerProps } from "../api/data";
 
 export default function Endpoint({params}: { params: { endpoint: string }}) {
-    const [endpoint, setEndpoint] = useState<EndpointProps | undefined>();
-    const [players, setPlayers] = useState<PlayerProps[]>([]);
+    const [{endpoint, players}, setData] = useState<{endpoint: EndpointProps, players: PlayerProps[]} | {endpoint: undefined, players: undefined}>({endpoint: undefined, players: undefined});
     useEffect(() => {
       const fetchData = async () => {
-        const res = await fetch(`/api/${params.endpoint}`);
-        const {endpoint} = await res.json();
-        setEndpoint(endpoint);
-        if (endpoint) {
-          const res = await fetch(`/api/players?type=${endpoint.type}`);
-          const {players} = await res.json();
-          setPlayers(players);
-        }
+        const res1 = await fetch(`/api/${params.endpoint}`);
+        const {endpoint} = await res1.json();
+        const res2 = await fetch(`/api/players/${endpoint.type}`);
+        const {players} = await res2.json();
+        setData({endpoint, players});
       };
       fetchData();
     }, []);
     return (
         <>
-        {players.map(({id, name}, index) => (
+        {players?.map(({id, name}, index) => (
           <Link key={index} href={`/${endpoint?.id}/${id}`}>{name}</Link>
         ))}
         </>

@@ -1,12 +1,8 @@
 import Image from "next/image";
-import dynamic from 'next/dynamic'
 import styles from "./page.module.css";
+import Endpoints from './components/endpoints';
 
-const DynamicEndpoints = dynamic(() => import('./components/endpoints'), {
-  ssr: false,
-});
-
-export const revalidate = 0;
+// export const revalidate = 0;
 
 export default function Home() {
   return (
@@ -46,7 +42,7 @@ export default function Home() {
       </div>
 
       <div className={styles.grid}>
-        <DynamicEndpoints />
+        <Endpoints />
       </div>
     </main>
   );
