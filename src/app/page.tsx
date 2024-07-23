@@ -2,7 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Endpoints from './components/endpoints';
 
-// export const revalidate = 0;
+export const revalidate = 0;
 
 export default function Home() {
   return (
