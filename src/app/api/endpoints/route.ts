@@ -5,4 +5,4 @@ export async function GET() {
     return Response.json({ endpoints });
 }
 
-// export const revalidate = 0;
+export const revalidate = 0;

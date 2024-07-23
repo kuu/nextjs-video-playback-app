@@ -3,7 +3,7 @@ import styles from "../page.module.css";
 import EndpointLink from '../components/endpoint';
 import EndpointName from '../components/endpoint-name';
 
-// export const revalidate = 0;
+export const revalidate = 0;
 
 export default function Endpoint({params}: { params: { endpoint: string }}) {
     return (

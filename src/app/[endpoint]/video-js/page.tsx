@@ -2,7 +2,7 @@ import styles from "../../page.module.css";
 import EndpointName from '../../components/endpoint-name';
 import HLSPlayer from '../../components/video-js';
 
-// export const revalidate = 0;
+export const revalidate = 0;
 
 export default function Player({params}: { params: { endpoint: string }}) {
   return (
